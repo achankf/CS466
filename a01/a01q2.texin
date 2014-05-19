@@ -1,3 +1,4 @@
+{\bf Very long respond alert!}
 \section*{Algorithm}
 Pick $c=7$ as it is the first value that works in reverse (trying from 13).
 The main method {\tt Select} $(k,n)$:
@@ -45,7 +46,7 @@ This is built after filtering by the median-of-median.
 The algorithm is simple.
 \begin{itemize}
 \item Create an array $M$ of 7 elements for the basis of the mapping.
-\item For each column $c$ in $n/9$ columns, append $c$ to $M[size(c)]$.
+\item For each column $c$ in $n/7$ columns, append $c$ to $M[size(c)]$.
 \end{itemize}
 For example,
 \begin{verbatim}
@@ -60,63 +61,75 @@ Let's define a method called {\tt minAvailable}, such that it returns the column
 
 \subsection*{New Method ``{\tt reoder}"}
 Notice that each sub-column of 5 elements in $A$ is in sorted order.
-Let $S$ be a set of \emph{at most} $3n/7$ elements that are taken from either $B$ and/or $C$.
-In other words, we are trying to move {\bf the smallest columns} (doable due to the mapping $M$) from $C$ into partition $B$, so that each column $A \bullet B$ has at most 15 elements.
+Here, we are trying to move {\bf the smallest columns} (doable due to the mapping $M$) from $C$ into partition $B$, so that each column $A \bullet B$ has at most 15 elements.
 
-Thus, after the filtering of elements by the median-of-median, we can reuse $A$ by inserting elements from $S$ to rebuild sorted columns of 15 elements.
-Of course, $S$ may not have all $\frac{3n}{7}$ elements -- meaning that $\|C\| = 0$ -- so in that case the algorithm inserts elements to $A$ by taking the last element in the last row in $A$ -- I called this operation {\tt rotate}.
-Notice that the array insertion takes $\Theta(n)$ \emph{copying}, and $\Theta(\lg n)$ \emph{comparisons} for the search.
-Thus, instead of spending the full number of comparisons for sorting $A \bullet B$, the cost is now
-\begin{align*}
-T_{\text{sorting} A\bullet B}(n) &\le \frac{\|A \bullet S\|}{7} \bigg( \floor{\lg (4 \times 5 \times 6)} + 1\bigg)\\
-	&\le \frac{n/2}{7} \times 7 \\
-	&\le \frac{n}{2}
-\end{align*}
+Notice that this is a {\bf greedy algorithm}; in particular, {\bf the size of the last column for inserting into $B$ is the minimum size of all columns in $C$. 
+In addition to a counter of the number of rows inserted to $B$, they allow a tighter upper bound.}
 
-\subsection*{Sort the remaining partition}
-The remaining part is to sort $C$ (at most 3 elements per column) into columns of size 7.
-We will use similar techniques for $A \bullet B$, but we have to regroup half of the columns to a fixed size of 4, and then the other half does the insertion.
-
-Though, we need to bound the the number of elements in each of $C$'s columns.
-\begin{lemma}\label{lem:col_3}
-After moving elements to $S$, if $|C| > 0$, then every column in $C$ must have size $\ge 2$.
-\end{lemma}
-\begin{proof}
-First, notice that {\tt reorder} uses a greedy algorithm to fill at most  $4n/9$ elements into S.
-This means that the last column that is uses to fill $S$ decides that the remaining columns in $C$ is at least the size of that column.
-
-Suppose by way of contradiction that $|C|$ has a column of size 1.
-Consequently, every column that is used to fill $S$ must have a size 1.
-%To minimize the number of columns used, suppose every column that is used to fill $S$ is exactly size 1.
-Then, $3n/7/1 = 3n/7$ columns are needed, which is impossible as there are only $n/7$ columns in total (for all $A$, $B$, $C$, and $D$).
-%\begin{itemize}
-%\item
-%The last column is of size 2 -- this implies $|C| = 0$, which contradicts the assumption that $|C| > n/9$.
-%\item
-%The last column is of size $\ge$ 3 -- this means all other columns in $C$ are of size 3 or above, so there can be no 2 columns of size 2; contradiction.
-%\end{itemize}
-\end{proof}
-
-Notice that $|C| \le 3n/7$.
-So, we split the elements into halves:
+Since $c=7$, so each column in $B$ is at most size 3.
+Thus, there are 3 cases:
 \begin{itemize}
 \item
-One halves, say $X$, merge every 2 columns together using merge-sort's {\tt merge}, which takes exactly $3n/14 \div 2$ comparisons. 
-Notice that each merged column contains has least 4 elements, due to lemma \ref{lem:col_3}.
-\item
-The other halves insert its elements into $X$.
-\item
-If there is not enough elements, use {\tt rotate} to more element from itself.
-\end{itemize}
-Thus, the number of comparisons is
+(Corner case) The {\bf second last} column that have inserted is of size {\bf 3}.
+Consequently, $|B| + |C| \approx 3n/7$ (all columns are full).
+Then, $A \bullet B$ is already sorted... well, just sort $C$ by ``brute force."
 \begin{align*}
-T_\text{remaining} (n) &\le \frac{3n/14}{2} + \frac{3n/14}{2 \times 7} \bigg( \floor{\lg (4*5*6)} + 1 \bigg) \\
-	&\le \frac{3n}{14}
+T_\text{case 1} &\le |C| / 7 * 13 = \frac{3/14}{7} *13 \\
+	&\le 0.39795918367346938776n
 \end{align*}
-Therefore, the total number of comparisons for maintaining the sorted order is
+\item
+The {\bf second last} column inserted to $B$ is of size {\bf 1}.
+This means all other, possibly except the last, column is of size 1.
+Notice there are $n/7$ columns, so this means that $B$ now contains $\le 2n/14 + 2$ elements (the last column can be of size 2 or 3), which is $\le |B| \le 3n/14$.
+Moreover, $|C| = 0$.
+
+In this case, we just insert elements of $B$ into $A$ (based on binary search), and when $B$ runs out of element, we pick the last element in the last column of $A$ to insert.
+
+Recall that $A$ is already sorted and each column has exactly 4 elements.
 \begin{align*}
-T_{\text{reorder}}(n) &\le T_{\text{sorting} A\bullet B}(n) + T_\text{remaining}(n)\\
-	&\le \frac{5n}{7}
+T_\text{case 2} &\le |A| / 7 \bigg( \floor{\lg (4 \times 5 \times 6)} + 3\bigg) = \frac{4/14}{7} *9 \\
+	&\le 0.36734693877551020408n
+\end{align*}
+\item
+The {\bf second last} column inserted to $B$ is of size 2.
+In this case, we want to maximize the columns of size 3 in $C$.
+
+Consider the number of columns that are spent on $B$.
+Since $|B| \le 3n/14$, so it takes $n/14$ rows of size 2 to fill $2n/14$ elements.
+Then, an additional $n/14/2$ rows of size 2 are needed to fill the remaining $n/14$ elements.
+In other words, $n/14+n/14/2 = 3n/28$ columns are needed.
+But there are only $n/7$ columns, so there are only
+\begin{align*}
+n/7-3n/28 &= n/28
+\text{ columns of size 3.} \\
+\implies |B| + |C| &\le 2 \times \frac{3n}{28} + 3 \times \frac{n}{28} \\
+	&\le \frac{9n}{28} \\
+\implies |C| &\le \frac{9n}{28} - |B| = \frac{9n}{28} - \frac{3n}{14}\\
+	&\le \frac{3n}{28}
+\end{align*}
+
+{\bf At this point, I stopped working and started celebrating... This bound took me like a week to figure out... YAHOOOOOO!!!}
+
+The rest is just ``brute force":
+\begin{itemize}
+\item
+Swap $B$ and $C$, so that $B$ now has $n/28$ columns of size 3, and then {\tt merge} (merge-sort style, $n$ comparisons for 2 lists, each of size $n$) them with half of the columns in $A$.
+\item
+Insert the remaining half ($n/28$ columns) in $B$ into $A$ with the help of binary search.
+\item
+Then just sort $C$, and done.
+\end{itemize}
+\begin{align*}
+T_\text{case 3} (n) &\le \frac{|A|+|B|}{2} + \frac{|A|/2}{4} \bigg( \floor{\lg (4 \times 5 \times 6)} + 3\bigg) + \frac{|C|}{7} \times 13 \\
+	&\le \frac{n}{4} + \frac{9n}{28} + \frac{39n}{196} = \frac{151n}{196} \\
+	&\le 0.77040816326530612245n
+\end{align*}
+\end{itemize}
+
+Thus, we have
+\begin{align*}
+T_\text{reorder} &\le \max(T_\text{case 1}, T_\text{case 2}, T_\text{case 3}) \\
+	&\le T_\text{case 3}
 \end{align*}
 
 \subsection*{Reduce Time for Filtering Partitions $B$ and $C$}
@@ -136,14 +149,14 @@ T(n) \le 13n/7 + T_\text{helper}(n)
 The upper bound of the helper method:
 \begin{align*}
 T_\text{helper} (n) &\le T_\text{helper}(n/7) + T_\text{filter}(n) + T_\text{reorder}(5n/7) + T_\text{helper}(5n/7) \\
-	&\le T_\text{helper}(n/7) + \frac{2n}{7} + \frac{5(5n/7)}{7} + T_\text{helper}(5n/7) \\
+	&\le T_\text{helper}(n/7) + \frac{2n}{7} + \frac{151(5n/7)}{196} + T_\text{helper}(5n/7)
 \end{align*}
 Suppose $T_\text{helper}(n) \le \alpha n$, then
 \begin{align*}
-T_\text{helper} (n) &\le \frac{\alpha n}{7} + \frac{25n}{49} + \frac{5 \alpha n}{7} \\
-\implies \alpha n &\ge \frac{6 \alpha n}{7} + \frac{39n}{49} \\
-	\alpha &\ge 5.57142857142857142857 \\
-	\implies T(n) &\le 7.42857142857142857143n
+T_\text{helper} (n) &\le \frac{\alpha n}{7} + \frac{1147n}{1372} + \frac{5 \alpha n}{7} \\
+\implies \alpha n &\ge \frac{6 \alpha n}{7} + \frac{1147n}{1372} \\
+	\alpha &\ge 5.85204081632653061224 \\
+	\implies T(n) &\le 7.70918367346938775510n
 \end{align*}
 So, pick $\alpha = 8$, and then check the base case:
 \begin{align*}
@@ -152,12 +165,21 @@ T(20) &= 62 & \text{from table for sorting 20 elements} \\
 \end{align*}
 Therefore, everything works and the we have the required constant.
 \done
-\subsection*{Reference}
+
+\clearpage
+
+\subsection*{Reference for Question 2}
 \begin{itemize}
 \item
 The Wiki example that shows a table of 100 elements after partitioning\footnote{\url{http://en.wikipedia.org/wiki/Median_of_medians#Properties_of_pivot}}, which I starred at it for 20+ hours, and realize that the partition $A$ and $B$ can be re-used.
 \item
-The BFPRT paper, which is a trap in making me to stare at those hardcore combinatorics arguments, wasting me like 1-2 days to wander around in space, fruitlessly.
+The BFPRT paper, which is a trap in making me to stare at those hardcore combinatorics arguments, wasting me like 1-2 days to wander around in space.
+One thing that I stole from it is the precondition that the helper method needs the partially sorted input.
 \item
-The other papers for the 2.9n and 3n upper bound; it is unfortunate that they were written in the Elvish Language -- perhaps Gandalf can understand them, but normal human beings like me do not understand.
+The other papers for the 2.9n and 3n upper bound; it is unfortunate that they were written in the Elvish Language -- perhaps Gandalf can understand them, but normal human beings like me do not understand them.
+\item
+CS341 -- without that class, I would not be able to think about using greedy algorithms to bound the size of $C$.
 \end{itemize}
+
+Despite that I have spent so much time on this question, I did not regret it.
+Now, time to rush assignments for CS446, CS456, CS458, and STAT231; and pick companies for Co-op...
