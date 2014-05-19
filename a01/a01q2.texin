@@ -83,7 +83,7 @@ This means all other, possibly except the last, column is of size 1.
 Notice there are $n/7$ columns, so this means that $B$ now contains $\le 2n/14 + 2$ elements (the last column can be of size 2 or 3), which is $\le |B| \le 3n/14$.
 Moreover, $|C| = 0$.
 
-In this case, we just insert elements of $B$ into $A$ (based on binary search), and when $B$ runs out of element, we pick the last element in the last column of $A$ to insert.
+In this case, we just insert elements of $B$ into $A$ (based on binary search), and when $B$ runs out of elements, we pick the last element in the last column of $A$ to insert until we have only one column of size $< 7$.
 
 Recall that $A$ is already sorted and each column has exactly 4 elements.
 \begin{align*}
@@ -92,13 +92,13 @@ T_\text{case 2} &\le |A| / 7 \bigg( \floor{\lg (4 \times 5 \times 6)} + 3\bigg) 
 \end{align*}
 \item
 The {\bf second last} column inserted to $B$ is of size 2.
-In this case, we want to maximize the columns of size 3 in $C$.
+{\bf In this case, we want to maximize the columns of size 3 in $C$.}
 
 Consider the number of columns that are spent on $B$.
 Since $|B| \le 3n/14$, so it takes $n/14$ rows of size 2 to fill $2n/14$ elements.
 Then, an additional $n/14/2$ rows of size 2 are needed to fill the remaining $n/14$ elements.
-In other words, $n/14+n/14/2 = 3n/28$ columns are needed.
-But there are only $n/7$ columns, so there are only
+In other words, $n/14+n/14/2 = 3n/28$ columns of size 2 are needed.
+But there are only $n/7$ columns in total, so there are only
 \begin{align*}
 n/7-3n/28 &= n/28
 \text{ columns of size 3.} \\
@@ -133,7 +133,7 @@ T_\text{reorder} &\le \max(T_\text{case 1}, T_\text{case 2}, T_\text{case 3}) \\
 \end{align*}
 
 \subsection*{Reduce Time for Filtering Partitions $B$ and $C$}
-Another aspect of reducing the number of comparisons for filtering $B$ and $C$ for the next iteration.
+Another aspect is to reduce the number of comparisons for filtering $B$ and $C$ for the next iteration.
 The assignment description suggests that all 3 elements ($\Theta(n)$ comparisons) in $B$'s and $C$'s columns are needed to check, but recall that each column is sorted, so we can use binary search instead ($1 + \floor{\lg n}$).
 In other words, the number of comparisons for ``Determine..." is now
 \begin{align*}
