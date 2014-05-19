@@ -1,0 +1,173 @@
+\section*{Algorithm}
+The main method {\tt Select} $(k,n)$:
+\begin{itemize}
+\item If $n$ is small (say, 20), sort the input and return the $k^{th}$ element.
+\item Sort the input into columns of 9's; $19n/9$ comparisons.
+\item Pass the input to {\tt SelectHelper}; $T_\text{helper}(n)$.
+\end{itemize}
+The helper method {\tt SelectHelper} $(k,n)$.
+\begin{itemize}
+\item {\bf New} Pre-condition: requires that the input is sorted.
+\item If $n$ is small (say, 20), sort the input and return the $k^{th}$ element.
+\item Recursively find the median-of-median; $T_\text{helper}(n/9)$.
+\item Determine where median-of-median fits on each column and filter unwanted elements; $T_\text{filter}(n)$.
+\item {\bf New} Now there are at most $n(9+(9-1)/2)/2/9 = 13n/18$ elements left; {\tt reoder} the partitions to restore the sorted ordering; $T_\text{reorder}(13n/18)$.
+\item Recurse on the remaining input; $T_\text{helper}(13n/18)$.
+\end{itemize}
+
+\section*{Main Ideas}
+First, consider this algorithm (for $c=9$) in terms of input's geometry.
+
+\begin{Verbatim}[samepage=true]
+          n/7
+    -----------------
+    |       |       |
+ 4  |   A   |   C   | 3
+    |       |-------|
+     -------|       |
+ 3  |   B   |   D   | 4
+    |       |       |
+    -----------------
+\end{Verbatim}
+
+Where $A$ is the partition that consists of elements $\le$ the median-of-median; $D$ is the partition that consists of elements $\ge$ the median-of-median; $B$ and $C$ are partitions that needs to be check against the median-of-median in the filtering phase.
+
+{\bf The major improvement comes from the fact that all columns remain in sorted order, albeit not necessarily in the same size, after the partitioning (i.e. Determine...).
+This means that we can exploit this property and sort less elements.}
+
+Let $A \bullet B$ be all of the columns of 7 elements in partition $A$ and $B$.
+Without loss of generality, assumes that the median-of-median is less than the $k^{th}$ (target) element, so that the next iteration will take partition $A$, and subsets of $B$ and $C$ -- the other way follows a mirrored argument.
+
+\subsection*{Array Mapping for (Column Size, List of Columns)}
+First, I introduce this data structure that can be built in linear time, in 0 comparisons.
+This is built after filtering by the median-of-median.
+The algorithm is simple.
+\begin{itemize}
+\item Create an array $M$ of 7 elements for the basis of the mapping.
+\item For each column $c$ in $n/9$ columns, append $c$ to $M[size(c)]$.
+\end{itemize}
+For example,
+\begin{verbatim}
+M[1] = (1), (95), (65), ...
+M[2] = (2,34), (77,94), (23,56), ...
+...
+M[7] = (100,101,102,103,104,105,106), ...
+\end{verbatim}
+Note that each column remains sorted.
+This data structure allows $O(1)$ search for available columns.
+Let's define a method called {\tt minAvailable}, such that it returns the column that has the minimum size.
+
+\subsection*{New Method ``{\tt reoder}"}
+Notice that each sub-column of 5 elements in $A$ is in sorted order.
+Let $S$ be a set of \emph{at most} $3n/7$ elements that are taken from either $B$ and/or $C$.
+In other words, we are trying to move {\bf the smallest columns} (doable due to the mapping $M$) from $C$ into partition $B$, so that each column $A \bullet B$ has at most 15 elements.
+
+Thus, after the filtering of elements by the median-of-median, we can reuse $A$ by inserting elements from $S$ to rebuild sorted columns of 15 elements.
+Of course, $S$ may not have all $\frac{3n}{7}$ elements -- meaning that $\|C\| = 0$ -- so in that case the algorithm inserts elements to $A$ by taking the last element in the last row in $A$ -- I called this operation {\tt rotate}.
+Notice that the array insertion takes $\Theta(n)$ \emph{copying}, and exactly $\ceil{\lg n}$ \emph{comparisons} for the search.
+Thus, instead of spending the full number of comparisons for sorting $A \bullet B$, the cost is now
+\begin{align*}
+T_{\text{sorting} A\bullet B}(n) &\le \frac{\|A \bullet S\|}{7} \bigg( \floor{\lg 3} + \floor{\lg 4} + \floor{\lg 5} + \floor{\lg 6} + 4\bigg)\\
+	&\le \frac{n/2}{9} \times 11 \\
+	&\le \frac{11n}{18}
+\end{align*}
+
+\subsection*{Sort the remaining partition}
+The remaining part is to sort $C$ (at most 4 elements per column) into columns of size 9.
+We will use similar techniques for $A \bullet B$, but we have to regroup half of the columns to a fixed size of 6, and then the other half does the insertion.
+
+Though, we need to bound the the number of elements in each of $C$'s columns.
+\begin{lemma}\label{lem:col_3}
+After moving elements to $S$, if $|C| > n/9$, then there can be at most 1 column of size 2 in $C$.
+\end{lemma}
+\begin{proof}
+First, notice that {\tt reorder} uses a greedy algorithm to fill at most  $4n/9$ elements into S.
+This means that the last column that is uses to fill $S$ decides that the remaining columns in $C$ is at least the size of that column.
+
+Suppose by way of contradiction that $|C|$ has at least 2 columns of size 2.
+Consequently, every column that is used to fill $S$ must have a size $\le 2$.
+To minimize the number of columns used, suppose every column that is used to fill $S$ is exactly size 2.
+Then, $4n/9/2 = n/9$ are needed -- meaning every column -- which leads to 2 cases:
+\begin{itemize}
+\item
+The last column is of size 2 -- this implies $|C| = 0$, which contradicts the assumption that $|C| > n/9$.
+\item
+The last column is of size $\ge$ 3 -- this means all other columns in $C$ are of size 3 or above, so there can be no 2 columns of size 2; contradiction.
+\end{itemize}
+\end{proof}
+
+Thus, we need to handle the sorting case when $|C| \le n/9$ and when $|C| > n/9$.
+\begin{itemize}
+\item
+$|C| \le n/9$: just sort the items; so the number of comparisons is
+\begin{align*}
+T_\text{case1} (n) &\le \frac{n/9}{9} \times 19 \\
+	&\le \frac{19n}{81} \approx 0.23456790123456790123n
+\end{align*}
+\item
+$|C| > n/9$: this means $|C| \le 4n/9$.
+In this case, we split the elements into halves:
+\begin{itemize}
+\item
+One halves ($2n/9$), say $X$, merge every 2 columns together using merge-sort's {\tt merge}, which takes exactly $2n/9$ comparisons. 
+Notice that each merged column contains has least 6 elements, due to lemma \ref{lem:col_3}.
+\item
+The other halves insert its elements into $X$.
+Thus, the number of comparisons is
+\begin{align*}
+T_\text{case2} (n) &\le \frac{2n/9}{2} + \frac{2n/9}{2 \times 9} \bigg( \ceil{\lg (6 \times 7 \times 8)}\bigg) \\
+	&\le \frac{2n}{9} \approx 0.22222222222222222222n
+\end{align*}
+\end{itemize}
+Since $T_\text{case1} > T_\text{case2}$, so we will take $T_\text{case1}$.
+\end{itemize}
+Therefore, the total number of comparisons for maintaining the sorted order is
+\begin{align*}
+T_{\text{reorder}}(n) &\le T_{\text{sorting} A\bullet B}(n) + T_\text{case1}(n)\\
+	&\le \frac{92n}{81}
+\end{align*}
+
+\subsection*{Reduce Time for Filtering Partitions $B$ and $C$}
+Another aspect of reducing the number of comparisons for filtering $B$ and $C$ for the next iteration.
+The assignment description suggests that all 4 elements ($\Theta(n)$ comparisons) in $B$'s and $C$'s columns are needed to check, but recall that each column is sorted, so we can use binary search instead ($1 + \floor{\lg n}$).
+In other words, the number of comparisons for ``Determine..." is now
+\begin{align*}
+T_\text{filter}(n) &\le \frac{n}{9} (1+\floor(\lg 4)) \\
+	&\le \frac{3n}{9}
+\end{align*}
+
+\subsection*{Analysis}
+The upper bound of the main method:
+\begin{align*}
+T(n) \le 19n/9 + T_\text{helper}(n)
+\end{align*}
+The upper bound of the helper method:
+\begin{align*}
+T_\text{helper} (n) &\le T_\text{helper}(n/9) + T_\text{filter}(n) + T_\text{reorder}(13n/18) + T_\text{helper}(13n/18) \\
+	&\le T_\text{helper}(n/9) + \frac{2n}{9} + \frac{92(13n/18)}{81} + T_\text{helper}(13n/18)
+\end{align*}
+Suppose $T_\text{helper}(n) \le \alpha n$, then
+\begin{align*}
+T_\text{helper} (n) &\le \frac{\alpha n}{9} + \frac{760n}{729} + \frac{13 \alpha n}{18} \\
+\implies \alpha n &\ge \frac{15 \alpha n}{18} + \frac{760n}{729} \\
+	\alpha &\ge 6.25514403292181069959
+\end{align*}
+So, pick $\alpha = 7$, and then check the base case:
+\begin{align*}
+T(20) &= 62 & \text{from table for sorting 20 elements} \\
+	&\le 140 = 7n
+\end{align*}
+Therefore, I have reduced the constant to $7 < 8$, as required.
+\done
+\subsection*{Reference}
+\begin{itemize}
+\item
+The Wiki example that shows a table of 100 elements after partitioning\footnote{\url{http://en.wikipedia.org/wiki/Median_of_medians#Properties_of_pivot}}, which I starred at it for 20+ hours, and realize that the partition $A$ and $B$ can be re-used.
+\begin{itemize}
+	\item at this stage, I came up with wrong recurrences, and it just happened that the optimal value at that time is $c=13$ -- the only reason I pick $c=9$ is because it is the first value that makes $\alpha \le 8$.
+\end{itemize}
+\item
+The BFPRT paper, which is a trap in making me to starr at those hardcore combinatorics arguments, wasting me like 1-2 days to wander around in space.
+\item
+The other papers for the 2.9n and 3n upper bound; it is unfortunate that they were written in the Elvish Language -- perhaps Gandalf can understand them, but normal human beings like me do not understand.
+\end{itemize}

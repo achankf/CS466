@@ -1,0 +1,19 @@
+First unroll the recurrence for a few times:
+\begin{align*}
+T(n) &= 2T(\frac{n}{2}) + n \lg n & \text{for $n > 1$, and that $T(1)=0$}\\
+	&= 2(2T(\frac{n}{2^2}) + \frac{n}{2} \lg(\frac{n}{2})) + n \lg n \\
+	&= 2^2T(\frac{n}{2^2}) + n (\lg(\frac{n}{2}) + \lg n) \\
+	&\cdots \\
+	&= 2^i T(\frac{n}{2^i}) + n \sum^i_{j = 1} (\lg(\frac{n}{2^{j-1}})) & \text{(by recursion tree method)}
+\end{align*}
+Notice that $T(\frac{n}{2^i}) = T(1)$, so $i = \lg n$.
+Thus, we have the following:
+\begin{align*}
+	T(n) &= 2^{\lg n} T(1) + n \sum^{\lg n}_{j = 1} (\lg(\frac{n}{2^{j-1}})) \\
+	&= 0 + n \sum^{\lg n}_{j = 1} (\lg n - \lg (2^{j-1})) \\
+	&= n \sum^{\lg n}_{j = 1} \lg n - n\sum^{\lg n}_{j = 1} (j-1) \\
+	&= \Theta(n \lg^2 n) - \Theta(n\lg n) \\
+	&= \Theta(n \lg^2 n)
+\end{align*}
+Thus, the method takes $\Theta(n\lg^2 n)$, which is also $O(n\lg^2 n)$.
+\done
