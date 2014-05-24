@@ -1,0 +1,27 @@
+Let $L = (1,2,3,4,5,6,7,8,9,10)$ be the original input list.
+\begin{enumerate}
+\item
+Since we are doing linear search on $L$ and does not modify it, so the cost of search $i$ is $i$; thus, the cost of searching the given sequence is $3+10+3+4+5+3+5+9+8+3 = 53$
+\item
+\begin{tabular}{|c|c|}
+\hline
+$i$ & Occurrences \\
+\hline
+3 & 3 \\
+5 & 2 \\
+4 & 1 \\
+8 & 1 \\
+9 & 1 \\
+10 & 1 \\
+\hline
+\end{tabular}
+
+Thus, the static ordering is $S = (3,5,4,8,9,10,1,2,6,7)$.
+The cost of searching part (a)'s sequence in $S$ is $1 + 6 + 1 + 3 + 2 + 1 + 2 + 5 + 4 + 1 = 26$.
+
+\item
+Consider the search sequence $s = (1,1,1,1,1,1,2,2,2,2)$.
+Clearly, $L$ is a static optimal for $s$, which cost $6\times 1 + 4 \times 2 = 14$ comparisons.
+However, with move-to-front, the cost of searching the first 6 one's is 6 comparisons, then the upcoming 2 cost 2 comparisons -- now 2 is at the beginning of the list -- then the 3 upcoming 2's cost 3 comparisons.
+Thus, MTF cost $6+2+3 = 11$ comparisons, which is cheaper than the static optimal.
+\end{enumerate}
