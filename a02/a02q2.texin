@@ -1,9 +1,11 @@
 The recurrence for the min-max approximation is the following:
 \begin{align*}
 T(1) &= 1 & \text{trivial base case}\\
-T(n) &= T(r) + T(n-r-1) + p + q \ceil{\lg r} & \text{where $p$, $q > 0$ are constants, $1 \le r \le \frac{n}{2}$} \\
+T(n) &\le T(r) + T(n-r-1) + p + q \ceil{\lg r} & \text{where $p$, $q > 0$ are constants, $1 \le r < \frac{n}{2}$} \\
 	&= T(r) + T(n-r-1) + t + q \lg r & \text{where $t = p + 1$, a constant}
 \end{align*}
+Notice if $r = n/2$, then we reach the best case -- this $<$ restriction is important for later analysis.
+
 Assume by induction that $T(n) \le \alpha n - \beta \lg n$, where $\alpha, \beta > 1$.
 Notice that the base case are obviously true: $\alpha 1 - \beta \lg 1 = \alpha$, so we have $T(1) = 1 \le \alpha$, which is true because $\alpha > 1$.
 
@@ -23,7 +25,7 @@ So we want to ``push" as many positive values to the {\bf numerator} as possible
 \begin{align*}
 	\alpha &> \lg \bigg(\frac{r^q n^\beta}{r^\beta (n-r-1)^\beta} \bigg) + t \\
 	\alpha &> \lg \bigg(\frac{n^\beta}{r^{\beta - q} (n-r-1)^\beta} \bigg) + t & \text{let $\beta > q$}\\
-	\alpha &> \lg \bigg(\frac{n^\beta}{(\frac{n}{2})^{\beta - q} (n-n/2)^\beta} \bigg) + t & \text{since $r \le \frac{n}{2}$}\\
+	\alpha &> \lg \bigg(\frac{n^\beta}{(\frac{n}{2})^{\beta - q} (n-n/2)^\beta} \bigg) + t & \text{$r < \frac{n}{2}$, so $r + 1 \le \frac{n}{2}$}\\
 	\alpha &> \lg \bigg(\frac{n^\beta 2^{\beta - q + \beta}}{n^{\beta - q} n^\beta} \bigg) + t \\
 	\alpha &> \lg \bigg(\frac{2^{2\beta - q}}{n^{\beta - q}} \bigg) + t \\
 	\alpha &> \lg \bigg(2^{2\beta - q} \bigg) + t & \text{set $n=1$ to maximize}\\
