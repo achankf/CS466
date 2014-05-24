@@ -29,7 +29,7 @@ So we want to ``push" as many positive values to the {\bf numerator} as possible
 	\alpha &> \lg \bigg(\frac{n^\beta 2^{\beta - q + \beta}}{n^{\beta - q} n^\beta} \bigg) + t \\
 	\alpha &> \lg \bigg(\frac{2^{2\beta - q}}{n^{\beta - q}} \bigg) + t \\
 	\alpha &> \lg \bigg(2^{2\beta - q} \bigg) + t & \text{set $n=1$ to maximize}\\
-	\alpha &> 2\beta - q + t > 1 & \text{and is a constant}
+	\alpha &> 2\beta - q + t > 1 & \text{and remains a constant}
 \end{align*}
 Notice that both $\alpha, \beta$ remain greater than 1.
 Thus, by induction, have we $T(n) \le \alpha n - \beta \lg n \in O(n)$, as required.
