@@ -1,0 +1,34 @@
+The recurrence for the min-max approximation is the following:
+\begin{align*}
+T(1) &= 1 & \text{trivial base case}\\
+T(n) &= T(r) + T(n-r-1) + p + q \ceil{\lg r} & \text{where $p$, $q > 0$ are constants, $1 \le r \le \frac{n}{2}$} \\
+	&= T(r) + T(n-r-1) + t + q \lg r & \text{where $t = p + 1$, a constant}
+\end{align*}
+Assume by induction that $T(n) \le \alpha n - \beta \lg n$, where $\alpha, \beta > 1$.
+Notice that the base case are obviously true: $\alpha 1 - \beta \lg 1 = \alpha$, so we have $T(1) = 1 \le \alpha$, which is true because $\alpha > 1$.
+
+Now do the substitution.
+\begin{align*}
+	T(n) &\le \alpha r - \beta \lg r  + \alpha (n-r-1) - \beta \lg(n-r-1)+ t + q \lg r
+\end{align*}
+Since $T(n) \le \alpha n - \beta \lg n$, we want the right-hand-side to be greater than the above terms.
+\begin{align*}
+\alpha n - \beta \lg n &> \alpha r - \beta \lg r  + \alpha (n-r-1) - \beta \lg(n-r-1)+ t + q \lg r \\
+	\implies \alpha &> - \beta \lg r - \beta \lg(n-r-1) + t + q \lg r + \beta \lg n\\
+	\alpha &> q \lg r + \beta \lg n - \beta (\lg r + \lg(n-r-1)) + t \\
+	\alpha &> \lg \bigg(\frac{r^q n^\beta}{(r (n-r-1))^\beta} \bigg) + t & \text{by log laws}
+\end{align*}
+Notice that we goal is maximize $\alpha$ such that it remains a constant.
+So we want to ``push" as many positive values to the {\bf numerator} as possible, while ensuring that the {\bf denominator} be as {\bf small} as possible (i.e. make the numerator independent of $n$, and make $n$ positive in the denominator, and set $n = 1$ in later steps).
+\begin{align*}
+	\alpha &> \lg \bigg(\frac{r^q n^\beta}{r^\beta (n-r-1)^\beta} \bigg) + t \\
+	\alpha &> \lg \bigg(\frac{n^\beta}{r^{\beta - q} (n-r-1)^\beta} \bigg) + t & \text{let $\beta > q$}\\
+	\alpha &> \lg \bigg(\frac{n^\beta}{(\frac{n}{2})^{\beta - q} (n-n/2)^\beta} \bigg) + t & \text{since $r \le \frac{n}{2}$}\\
+	\alpha &> \lg \bigg(\frac{n^\beta 2^{\beta - q + \beta}}{n^{\beta - q} n^\beta} \bigg) + t \\
+	\alpha &> \lg \bigg(\frac{2^{2\beta - q}}{n^{\beta - q}} \bigg) + t \\
+	\alpha &> \lg \bigg(2^{2\beta - q} \bigg) + t & \text{set $n=1$ to maximize}\\
+	\alpha &> 2\beta - q + t > 1 & \text{and is a constant}
+\end{align*}
+Notice that both $\alpha, \beta$ remain greater than 1.
+Thus, by induction, have we $T(n) \le \alpha n - \beta \lg n \in O(n)$, as required.
+\done
