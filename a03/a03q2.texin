@@ -94,7 +94,7 @@ plus 1 zig to move $i$ to the root
 Thus, the cost of {\bf all} insertions is $\Theta(n)$.
 
 On the other hand, right after each insertion, $i$ is at the root and the cost of searching $i$ is 1.
-Thus, the cost of searching the entire sequence of $s$ equals to the number of nodes in $T$, which is $\Theta(n\lg n)$ as explained previously.
+Thus, the cost of searching the entire sequence of $s$ equals to the number of searches on $T$, which is $\Theta(n\lg n)$ as explained previously.
 
 Finally, since $\Theta(n\lg n) \in o(n\lg^2 n)$ and the cost of searching in the static optimal is $\Omega(n\lg^2 n)$, thus, $s$ is the required sequence.
 \done
