@@ -1,0 +1,16 @@
+First, without loss of generality, consider the correctness left-rotation operations.
+
+Let $key(x)$ be the key of $x$.
+
+Zig:
+Suppose $T$ is a splay tree and the node $x$ has been inserted to the left of the root, $r$.
+
+Base case:
+There are 2 nodes, $r$ and $x$.
+Our situation implies that $key(x) \le key(r)$.
+Then, the zig operation will move $x$ to the root, and $r$ with become the right child of $x$.
+
+Inductive Step:
+$r$'s left child is $x$; $r$ has a non-empty right sub-tree, $A$; and $x$ has non-empty left subtree, $B$, and right subtree, $C$.
+
+After some rotations
