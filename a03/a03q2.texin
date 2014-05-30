@@ -1,0 +1,100 @@
+{\bf Idea} We count maximum bound of searching for Splay tree, and then compare it with the lower bound of the static optimal for our search sequence.
+
+Let the $n$ keys be $\{1, \cdots, n\}$, and construct the sequence $s$ in increasing order of the keys as follows:
+\begin{itemize}
+\item
+search 1 for $n/2$ times ($n/2$ searches in total).
+\item
+search 2, 3 each for $n/4$ times ($n/2$ searches in total).
+\item
+search 4, 5, 6, 7 each for $n/8$ times ($n/2$ searches in total).
+\item
+$\cdots$
+\item
+search $n/2 , n/2+1, \cdots, n$ each for $1$ times ($n/2$ searches in total).
+\end{itemize}
+So, $s$ looks like $11111...22222...3333....nnnnnn$.
+Observe that I have construct a search seqence similar to a complete binary tree (not search tree), and that $s$ makes exactly $(n\lg n) /2$ searches in total.
+
+\subsection*{Lower bound for static optimal for $s$}
+Let's forget about the ``search" in binary search tree, and let's just {\bf count the minimum number of search of $s$ in a \emph{binary tree} in terms of groups based on the size of each key}.
+Let $T$ be such a tree, as follows.
+
+\Tree[.$n/2$ [.$n/4$ [.$\cdots$ 1 1 ] [.$\cdots$ 1 1 ] ] [.$n/4$ [.$\cdots$ 1 1 ] [.$\cdots$ 1 1 ] ] ]\\
+
+{\bf Idea} We argue that we cannot do better than $T$, and then count the cost of reaching all nodes -- that is the lower bound.
+
+Let the cost of searching a node $v$, $C(v)$, be the value of the node, $val(v)$, times the depth of the node, $depth(v)$.
+For example,
+$C(root) = val(root) \times depth(root) = n/2 \times 1 = n/2$.
+
+\begin{claim}
+The binary tree $T$ minimizes the cost of searching for each group in $s$.
+\end{claim}
+\begin{proof}
+Suppose by contradiction that a more optimal arrangement $T^*$ exists, such that the cost of search is less than that of $T$.
+Then there are 3 possibilities:
+\begin{itemize}
+\item
+An internal node is being moved to the leaf (no swapping between nodes) -- searching $s$ now trivially cost more than that of $T$, \emph{as that node has increased its depth and its children need to be moved down too}.
+Contradiction.
+\item
+An internal node, $p$, at depth $k + \alpha$ is being swapped up with node $q$ at depth $k$, for $\alpha > 0$.
+Let $C'(p)$ denotes the new cost of $p$.
+Thus, the new cost is the following:
+\begin{align*}
+\text{Cost of searching $s$} = \sum_{v \in T} C(v) - C(p) - C(q) + C'(p) + C'(q)
+\end{align*}
+Notice that due to the construction of $T$, $val(p) = n/2^{k+\alpha - 1}$, and $val(p) = n/2^{k-1}$.
+Since $T^*$ is more optimal than $T$ (i.e. cost less), so we have
+\begin{align*}
+- C(p) - C(q) + C'(p) + C'(q) &< 0 \\
+C'(p) + C'(q) &< C(p) + C(q) \\
+k \frac{n}{2^{k+\alpha - 1}} + (k+\alpha) \frac{n}{2^{k-1}} &< (k + \alpha) \frac{n}{2^{k+\alpha - 1}} + k \frac{n}{2^{k-1}} \\
+\frac{k}{2^\alpha} + k + \alpha &< \frac{k+\alpha}{2^\alpha} + k & \text{multiply by $\frac{2^{k-1}}{n}$ on both sides}\\
+2^\alpha < 1 \\
+\alpha < 0
+\end{align*}
+which contradicts our condition that $\alpha > 0$.
+\item
+... swapping with a node that has lower depth, which is the same as swapping $q$ with $p$ from the previous case; thus, contradiction.
+\end{itemize}
+Thus, all 3 cases fail and $T^*$ cannot exist.
+Therefore, $T$ minimizes the seaching cost for search sequence $s$.
+\end{proof}
+
+\begin{coro}
+Searching $s$ in the static optimal takes $\Omega(n\lg^2 n)$.
+\end{coro}
+\begin{proof}
+As mention previously, the sum of each depth, $d$, of $T$ has value $n/2$ (the number of nodes), and each node takes $d$ steps to reach.
+Thus, we have the following summation.
+\begin{align*}
+\sum_{v \in T} C(v) &= \sum_{d = i}^{\lg n} d \times \frac{n}{2} \\
+	&= \frac{n}{2} \sum_{d = i}^{\lg n} d \\
+	&= \frac{n}{2} \times \Theta(\lg^2 n) & \text{by arithmetic progression} \\
+	&= \Theta(n\lg^2 n)
+\end{align*}
+This statement is valid because $T$ is the best case of accessing all nodes without considering its key values for each size group in $s$ -- clearly we cannot have 1 at the root and remain balance because other keys are greater than 1, so the static optimal is obviously at least worse than $T$, as required.
+\end{proof}
+\subsection*{Upper bound for splay tree for $s$}
+This is the easy part.
+Let's be generious and count insertion and searching separately.
+
+Let $T$ be the empty splay tree.
+First, observe that we are inserting values in increasing order, so for inserting $i > 1$ (so that $T$ at least have $1$ in it), $i$ will be inserted to the {\bf right of the root and then do a zig, so that $i$ will become the new root.}
+Thus, we have something like a linked list that is ``tilted" to the left.
+The cost of {\bf each} insertion is $c$, a constant:
+\begin{itemize}
+\item
+at root, 1 move to insert at the right child
+\item
+plus 1 zig to move $i$ to the root
+\end{itemize}
+Thus, the cost of {\bf all} insertions is $\Theta(n)$.
+
+On the other hand, right after the insertion, $i$ is at the root and the cost of searching $i$ is 1.
+Thus, the cost of searching the entire sequence of $s$ equals to the number of nodes in $T$, which is $\Theta(n\lg n)$ as explained previously.
+
+Finally, since $\Theta(n\lg n) \in o(n\lg^2 n)$ and the cost of searching in the static optimal is $\Omega(n\lg^2 n)$, thus, $s$ is the required sequence.
+\done
