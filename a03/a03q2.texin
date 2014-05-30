@@ -1,4 +1,4 @@
-{\bf Idea} We count maximum bound of searching for Splay tree, and then compare it with the lower bound of the static optimal for our search sequence.
+{\bf Idea} For a search sequence, we count maximum bound of searching for Splay tree, and then compare it with the lower bound of the static optimal for our search sequence.
 
 Let the $n$ keys be $\{1, \cdots, n\}$, and construct the sequence $s$ in increasing order of the keys as follows:
 \begin{itemize}
@@ -93,7 +93,7 @@ plus 1 zig to move $i$ to the root
 \end{itemize}
 Thus, the cost of {\bf all} insertions is $\Theta(n)$.
 
-On the other hand, right after the insertion, $i$ is at the root and the cost of searching $i$ is 1.
+On the other hand, right after each insertion, $i$ is at the root and the cost of searching $i$ is 1.
 Thus, the cost of searching the entire sequence of $s$ equals to the number of nodes in $T$, which is $\Theta(n\lg n)$ as explained previously.
 
 Finally, since $\Theta(n\lg n) \in o(n\lg^2 n)$ and the cost of searching in the static optimal is $\Omega(n\lg^2 n)$, thus, $s$ is the required sequence.
