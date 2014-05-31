@@ -1,16 +1,22 @@
-First, without loss of generality, consider the correctness left-rotation operations.
+Let a rotation be one of zig, zig-zig, and zig-zag.
 
-Let $key(x)$ be the key of $x$.
+\subsection*{Manipulating the structure of the tree is possible}
+First, notice that the rotations can be done by ``swapping pointers of the structure"
+The methods would keep track of the path from the root to the inserted/searched/deleted node, and then do the rotations bottom-up.
+Concretely speaking, we would create a list of \emph{pointers of pointers to the nodes}, and we want to swap the value of the \emph{pointers to the nodes} (i.e., the structure of the tree) when we do the rotations.
 
-Zig:
-Suppose $T$ is a splay tree and the node $x$ has been inserted to the left of the root, $r$.
+\subsection*{Nodes other than $x$, $y$, $z$ do not change rank}
+By definition, each rotation only swap the structural pointers of the splayed/inserted node, say $x$, its grandparent, say $y$, and possibly its grand-grandparent, say $z$.
+Then $x$'s, $y$'s, $z$'s \emph{immediate} children nodes are ``carried over" to their new positions below $x$, $y$, or $z$ -- the structure of these subtrees remain the same.
+Also, the ancestors above $z$, if any, are not being touched during the rotation.
+Thus, only the rank of $x$, $y$, and $z$ changes for that particular rotation.
 
-Base case:
-There are 2 nodes, $r$ and $x$.
-Our situation implies that $key(x) \le key(r)$.
-Then, the zig operation will move $x$ to the root, and $r$ with become the right child of $x$.
+\subsection*{Conclusion}
+In each rotation, we are changing the structure of \emph{at most 3} related nodes, thus the depth of $y$, $z$ cannot be increased more than 2:
 
-Inductive Step:
-$r$'s left child is $x$; $r$ has a non-empty right sub-tree, $A$; and $x$ has non-empty left subtree, $B$, and right subtree, $C$.
+{\bf Counting analogy} In the worst case we get a ``linked list" of 3 nodes and $x$ is at the front, so there are 2 more ``spaces" left; hence, the $y$'s and $z$'s depth cannot be increased by more than 2.
 
-After some rotations
+Finally, $y$ and $z$ have become $x$'s descendants, so in the next rotation of $x$ the rank of $y$ and $z$ will not be changed anymore as they will be ``carried over" as subtrees, just like their children.
+
+Therefore, no node will have its depth increased by more than 2.
+\done

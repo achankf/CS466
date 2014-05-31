@@ -39,7 +39,7 @@ Then there are 3 possibilities:
 An internal node is being moved to the leaf (no swapping between nodes) -- searching $s$ now trivially cost more than that of $T$, \emph{as that node has increased its depth and its children need to be moved down too}.
 Contradiction.
 \item
-An internal node, $p$, at depth $k + \alpha$ is being swapped up with node $q$ at depth $k$, for $\alpha > 0$.
+An internal node, $p$, at depth $k + \alpha$ is being swapped with node $q$ at depth $k$ (i.e. swapping up), for $\alpha > 0$.
 Let $C'(p)$ denotes the new cost of $p$.
 Thus, the new cost is the following:
 \begin{align*}
@@ -82,7 +82,7 @@ This is the easy part.
 Let's be generious and count insertion and searching separately.
 
 Let $T$ be the empty splay tree.
-First, observe that we are inserting values in increasing order, so for inserting $i > 1$ (so that $T$ at least have $1$ in it), $i$ will be inserted to the {\bf right of the root and then do a zig, so that $i$ will become the new root.}
+First, observe that we are inserting values in increasing order, so for inserting $i > 1$ (after we have inserted $1$), $i$ will be inserted to the {\bf right of the root and then do a zig, so that $i$ will become the new root.}
 Thus, we have something like a linked list that is ``tilted" to the left.
 The cost of {\bf each} insertion is $c$, a constant:
 \begin{itemize}
@@ -95,6 +95,7 @@ Thus, the cost of {\bf all} insertions is $\Theta(n)$.
 
 On the other hand, right after each insertion, $i$ is at the root and the cost of searching $i$ is 1.
 Thus, the cost of searching the entire sequence of $s$ equals to the number of searches on $T$, which is $\Theta(n\lg n)$ as explained previously.
+Thus, the cost of searching $s$ with the Splay tree is $\Theta(n\lg n)$.
 
-Finally, since $\Theta(n\lg n) \in o(n\lg^2 n)$ and the cost of searching in the static optimal is $\Omega(n\lg^2 n)$, thus, $s$ is the required sequence.
+Finally, since $\Theta(n\lg n) \in o(n\lg^2 n)$ and the cost of searching in the static optimal is $\Omega(n\lg^2 n)$; thus, the splay tree asymptotically cost less than the static optimal for the search sequence $s$.
 \done
