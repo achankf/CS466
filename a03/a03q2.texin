@@ -45,13 +45,13 @@ Thus, the new cost is the following:
 \begin{align*}
 \text{Cost of searching $s$} = \sum_{v \in T} C(v) - C(p) - C(q) + C'(p) + C'(q)
 \end{align*}
-Notice that due to the construction of $T$, $val(p) = n/2^{k+\alpha - 1}$, and $val(p) = n/2^{k-1}$.
+Notice that due to the construction of $T$, $val(p) = n/2^{k+\alpha}$, and $val(p) = n/2^{k}$.
 Since $T^*$ is more optimal than $T$ (i.e. cost less), so we have
 \begin{align*}
 - C(p) - C(q) + C'(p) + C'(q) &< 0 \\
 C'(p) + C'(q) &< C(p) + C(q) \\
-k \frac{n}{2^{k+\alpha - 1}} + (k+\alpha) \frac{n}{2^{k-1}} &< (k + \alpha) \frac{n}{2^{k+\alpha - 1}} + k \frac{n}{2^{k-1}} \\
-\frac{k}{2^\alpha} + k + \alpha &< \frac{k+\alpha}{2^\alpha} + k & \text{multiply by $\frac{2^{k-1}}{n}$ on both sides}\\
+k \frac{n}{2^{k+\alpha}} + (k+\alpha) \frac{n}{2^{k}} &< (k + \alpha) \frac{n}{2^{k+\alpha}} + k \frac{n}{2^{k}} \\
+\frac{k}{2^\alpha} + k + \alpha &< \frac{k+\alpha}{2^\alpha} + k & \text{multiply by $\frac{2^{k}}{n}$ on both sides}\\
 2^\alpha < 1 \\
 \alpha < 0
 \end{align*}
