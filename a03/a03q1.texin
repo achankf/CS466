@@ -6,17 +6,20 @@ The methods would keep track of the path from the root to the inserted/searched/
 Concretely speaking, we would create a list of \emph{pointers of pointers to the nodes}, and we want to swap the value of the \emph{pointers to the nodes} (i.e., the structure of the tree) when we do the rotations.
 
 \subsection*{Nodes other than $x$, $y$, $z$ do not change rank}
-By definition, each rotation only swap the structural pointers of the splayed/inserted node, say $x$, its grandparent, say $y$, and possibly its grand-grandparent, say $z$.
-Then $x$'s, $y$'s, $z$'s \emph{immediate} children nodes are ``carried over" to their new positions below $x$, $y$, or $z$ -- the structure of these subtrees remain the same.
+By definition, each rotation only swap the structural pointers of the target node, say $x$, its grandparent, say $y$, and possibly its grand-grandparent, say $z$.
+Then $x$'s, $y$'s, $z$'s \emph{immediate} children nodes are being assigned to $x$, $y$, or $z$ as their children node -- the structure of these subtrees remain the same.
+
 Also, the ancestors above $z$, if any, are not being touched during the rotation.
-Thus, only the rank of $x$, $y$, and $z$ changes for that particular rotation.
+In particular, each rotation step only consider the subtree with $z$ as the root.
+
+Thus, only the ranks of $x$, $y$, and $z$ change for that particular rotation.
 
 \subsection*{Conclusion}
-In each rotation, we are changing the structure of \emph{at most 3} related nodes, thus the depth of $y$, $z$ cannot be increased more than 2:
+In each rotation, we are changing the structure of \emph{at most 3} related nodes (i.e. $x$, $y$, $z$), thus the depth of $y$, $z$ cannot be increased more than 2:
 
 {\bf Counting analogy} In the worst case we get a ``linked list" of 3 nodes and $x$ is at the front, so there are 2 more ``spaces" left; hence, the $y$'s and $z$'s depth cannot be increased by more than 2.
 
-Finally, $y$ and $z$ have become $x$'s descendants, so in the next rotation of $x$ the rank of $y$ and $z$ will not be changed anymore as they will be ``carried over" as subtrees, just like their children.
+Finally, $y$ and $z$ have become $x$'s descendants, so in the next rotation the ranks of $y$ and $z$ will not be changed anymore as they will be ``carried over", just like their children for the current rotation.
 
 Therefore, no node will have its depth increased by more than 2.
 \done
