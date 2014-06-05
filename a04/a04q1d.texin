@@ -1,0 +1,2 @@
+Notice that for each $s \in S$, $m_2$ can be replaced twice:
+whenever $s > m_2$, replace $m_2$ with $s$, and if $s > m_1$, then swap $m_2$ and $m_1$.

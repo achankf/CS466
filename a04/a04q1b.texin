@@ -1,0 +1,8 @@
+The condition (or ``case 2") is for some $s \in S$, such that $s \ge m_1$.
+Namely, if some $s \in S$ becomes $m'_1$, then $m_2$ must be either the original $m_1$, or some other value in $S$, which can be discovered immediately after the processing of the $n$-th value.
+For the probability of case 2 to happen, consider the analogy where you throw a ball, which represents the maximum value, to a bucket that is divided into parts $R$ and $S$, and we want the possibilities that the ball lands on $S$.
+Let $p = P(\text{maximum is in $S$})$.
+Thus, we have:
+\begin{align*}
+p &= \frac{|S|}{n} = \frac{n-r}{n} = 1 - \frac{1}{\lg n}
+\end{align*}
