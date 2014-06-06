@@ -1,2 +1,20 @@
-Notice that for each $s \in S$, $m_2$ can be replaced twice:
-whenever $s > m_2$, replace $m_2$ with $s$, and if $s > m_1$, then swap $m_2$ and $m_1$.
+{\bf Case 1}
+In case 1, the maximum is \emph{not} is $S$, so $m_2$ can only be replace when $s \in S$ is a larger value than $m_2$.
+Thus, the probability is $1/i$ for the $i$-th element -- since the algorithm now searches in $S$, so $i = (n-r), \cdots, n$.
+\begin{align*}
+Cost_\text{case 1} &= \sum_{i=n-r}^n \frac{1}{i} \\
+	&= \sum_{i=1}^n \frac{1}{i} - \sum_{i=1}^r \frac{1}{i} \\
+	&= H_n - H_r \\
+	&= \ln \frac{n}{r} + O(1) \\
+	&= \ln\lg n + O(1)
+\end{align*}
+
+{\bf Case 2} Notice that for each $s \in S$, $m_2$ can be replaced whenever $s$ is the second-largest value or $s$ is the largest value.
+Both events are independent, so the probability is $1/i + 1/i = 2/i$, again $i = (n-r), \cdots, n$.
+Thus, the expected number of replacement for $m_2$ is
+\begin{align*}
+Cost_\text{case 2} &= \sum_{i=n-r}^n \frac{2}{i} \\
+	&= 2(H_n - H_r) \\
+	&= 2\ln\lg n + O(1)
+\end{align*}
+\done

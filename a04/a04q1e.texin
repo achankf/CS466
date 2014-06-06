@@ -1,0 +1,19 @@
+The total number of comparisons consist of 3 parts:
+\begin{itemize}
+\item
+The ``fix cost" $n$ (well, it should be $n-1$, but then everything is probably off-by-one already...) for searching the maximum.
+\item
+Probability of case 1, $(1-p)$, times the cost of case 1: the expected cost for the second comparison {\bf and} the cost for searching the in ``tournament"
+\item
+Probability of case 2, $p$, times the cost of case 2: the expected cost for the second comparison
+\end{itemize}
+Then, the total expected cost of the method is
+\begin{align*}
+T(n) &= n + (1-p) \times (Cost_\text{case 1} + \lg r) + p \times Cost_\text{case 2} \\
+	&= n + \frac{1}{\lg n} (\ln\lg n + O(1) + \lg r) + (1 - \frac{1}{\lg n}) (2\ln\lg n + O(1)) \\
+	&= n + (\frac{\lg\lg n}{\lg n} + \frac{\lg r}{\lg n}) + (2\ln\lg n - \frac{2\ln\lg n}{\lg n}) + O(1)) \\
+	&= n + (\frac{\lg\lg n}{\lg n} + \frac{\lg n}{\lg n} - \frac{\lg\lg n}{\lg n}) + (2\ln\lg n - \frac{2\ln\lg n}{\lg n}) + O(1)) \\
+	&= n + (O(1) + O(1) + O(1)) + (2\ln\lg n + O(1)) + O(1) \\
+	&= \Theta(n + \ln\lg n)
+\end{align*}
+\done

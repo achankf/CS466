@@ -1,7 +1,8 @@
 First, as in the description, a cost of $r-1$ comparisons is needed for the sample $R$.
 At this point, the algorithm does it job in $S$, and there are 2 cases:
 
-Either for some elements $s \in S$, such that $m_2 \le s < m_1$.
+{\bf Case 1: (Maximum not in $S$ -- this is the worst case)}
+For some elements $s \in S$, such that $m_2 \le s < m_1$.
 Here we only know the second-largest element for $S$ but not necessarily for $R$, so $m_2$ needs to compare with those who lost to $m_1$.
 As described by the prof., a ``tournament" tree is built for searching the second-largest value in $R$, so the number of comparisons is $\lg r$.
 Finally, the factor 2 is due to the case where the maximum is in $R$, but the second maximum is in $S$ -- thus, at most 2 comparisons are for comparing $s$ and $m_2$, and possibly $s$ and $m_1$.
@@ -9,3 +10,4 @@ Finally, the factor 2 is due to the case where the maximum is in $R$, but the se
 T_\text{case 1} (n) &= (r-1) + 2(n-r-1) + \lg r \\
 	&= 2n - r + \lg r + O(1)
 \end{align*}
+\done
