@@ -1,0 +1,6 @@
+The recurrence relation is trivially
+\begin{align*}
+T(1) &= 0 \\
+T(n) &= T(\ceil{\frac{n}{2}}) + T(\floor{\frac{n}{2}}) + (n - 1)
+\end{align*}
+\done
