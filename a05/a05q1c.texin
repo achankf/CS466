@@ -14,7 +14,7 @@ Then, $3 \ceil{\lg 3} - 2^{\ceil{\lg 3}} + 1 = 3$.
 The 2 cases:
 \begin{itemize}
 \item
-When $n > 3$ is an even number.
+{\bf When $n > 3$ is an even number.}
 Observe that $\ceil{n/2} = \floor{n/2} = n/2$.
 \begin{align*}
 T(n) &= T(\ceil{\frac{n}{2}}) + T(\floor{\frac{n}{2}}) + (n - 1) \\
@@ -25,9 +25,8 @@ T(n) &= T(\ceil{\frac{n}{2}}) + T(\floor{\frac{n}{2}}) + (n - 1) \\
 	&= n \ceil{\lg n} - 2^{\ceil{\lg n}} + 1
 \end{align*}
 \item
-When $n > 3$ is odd but is not a power of 2.
-
-Now, consider the following counting argument:
+{\bf When $n > 3$ is an odd number.}
+Consider the following counting argument:
 pad the whole array with a dummy variable, so that $n' = n + 1$, which is an even number, so the ``even case" can be applied.
 \begin{align*}
 T(n') &= (n+1) \ceil{\lg (n+1)} - 2^{\ceil{\lg (n+1)}} + 1
