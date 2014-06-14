@@ -32,7 +32,7 @@ pad the whole array with a dummy variable, so that $n' = n + 1$, which is an eve
 T(n') &= (n+1) \ceil{\lg (n+1)} - 2^{\ceil{\lg (n+1)}} + 1
 \end{align*}
 However, since $n > 3$, so $2^{i-1} < n < (n+1) \le 2^i$, and so $\ceil{\lg(n+1)} = \ceil{\lg n}$.
-Moreover, $T(n)$ has overcount the total number of comparisons by exactly $\ceil{\lg n}$ comparisons (i.e. dummy variable is being tested once per depth of the recurrsion tree).
+Moreover, $T(n)$ has overcount the total number of comparisons by exactly $\ceil{\lg n}$ comparisons (i.e. dummy variable forces one more comparison per depth on the recurrsion tree).
 Thus, the real quantity is
 \begin{align*}
 T(n) &= T(n') - \ceil{\lg n} \\
