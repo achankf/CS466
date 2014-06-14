@@ -1,0 +1,77 @@
+Reference: 
+\begin{itemize}
+\item
+TA's hint during office hours and the professor's hint on Piazza
+\item
+Trono, Average Case Analysis When Merging Two Ordered Lists of Different Length
+\end{itemize}
+{\bf Idea}
+First, find the expected value for merging two lists.
+Then, update the recurrence relation and then solve it with the recursion tree method.
+\begin{lemma}
+If $a_i$ in $B$ is larger than all elements in $C$, then $i-1$ comparisons must be performed
+\end{lemma}
+\begin{proof}
+If there are some elements in $B$ that comes before $a_i$, say $B = \{a_s, \cdots, a_t, a_i\}$, for $s < t < i$.
+First, $s$ comparsions are needed to push $\{a_1, \cdots a_s \}$ into $A$.
+Similarly, $t-s$ are needed to push $\{a_{s+1} + \cdots + a_{t} \}$ into $A$.
+Finally, $i-t-1$ comparisons are needed to push $\{ a_{t}, \cdots, a_{i-1} \}$ into $A$.
+At this point, {\bf because $C$ is now empty}, anything that follows $a_{i-1}$ are automatically pushed into $A$.
+Thus, we have a telescoping series (here we only have 3 terms, but there could be more depending on the number of elements before $a_i$ in $B$)
+\begin{align*}
+s + (t-s) + \cdots + (i-t-1) &= i-1
+\end{align*}
+where the dots represents that the expression should be more granular.
+\end{proof}
+Then, consider the probability of $a_i$ in $B$ (or $C$) being larger than all elements in $C$ (or $B$), i.e. $(i-1)$ comparisons are needed.
+\begin{itemize}
+\item
+{\bf Numerator}
+Consider the counting argument for which $a_i$ can be in $B$: for each element $a_j < a_i$, it is either in/not in $B$, and there are $i-1$ ``slots" before $a_i$ in $B$.
+Thus, the total number of such $B$ for $a_i$ is
+\begin{align*}
+2 \times \cdots \times 2 &= 2^{i-1}
+\end{align*}
+Similarly, the same argument applies for $C$, so the total overall number of such possibilities is
+\begin{align*}
+2^{i-1} + 2^{i-1} = 2^i
+\end{align*}
+\item
+{\bf Denominator}
+For each of $B$ and $C$, add all $2^{i-1}$, for $1 \le i \le n-1$ (at most $n-1$ slots).
+\begin{align*}
+\sum_{i=1}^{n-1} 2^{i-1} + \sum_{i=1}^{n-1} 2^{i-1} &= 2 \sum_{i=1}^{n-1} 2^{i-1} \\
+	&= 2\sum_{i=0}^{n-2} 2^i \\
+	&= 2 (2^{n-1} -1) & \text{Geometric series} \\
+	&= 2^n -2
+\end{align*}
+\item
+Together, the probability is
+\begin{align*}
+P(a_i \text{ larger than all elements in the other list}) &= \frac{2^i}{2^n-2} \\
+	&= P(a_i) & \text{for short}
+\end{align*}
+\end{itemize}
+Thus, the expected value is: being the $i$-th element, times the probability for its required comparisons ($i-1$).
+\begin{align*}
+\sum_{i=1}^n (i-1)P(i-1) &= \sum_{i=1}^n (i-1)P(i-1) \\
+	&= \sum_{i=1}^n i\frac{2^i}{2^n-2} - \sum_{i=1}^n 1\\
+	&= \frac{1}{2^n -2} \sum_{i=1}^n i2^i - n\\
+	&= \frac{1}{2^n -2} \bigg( 2\frac{1-(n+1)2^n + n 2^{n+1}}{(1-2)^2} \bigg) -n & \text{formula from {\bf the} cheat sheet}\\
+	&= \frac{1}{2^n -2} \bigg( 2-2(n+1)2^n + n 2^{n+2} \bigg) -n \\
+	&= \frac{1}{1 - \frac{2}{2^n}} \bigg( \frac{2}{2^n}-2(n+1) + 4n \bigg) -n \\
+	&\approx -2(n + 1) + 4n -n & \text{for ``large" $n$}\\
+	&= n - 2
+\end{align*}
+The rest is about solving the new recurrence relation.
+Since we only care about the asymptotic difference, for simplicity assume $n$ is a power of 2.
+\begin{align*}
+T(1) &= 0 \\
+T(n) &= 2T(\frac{n}{2}) + n - 2 \\
+\iff &= dn - 2\sum^{d-1}_{i=1} i & \text{by recursion tree method, where $d = \lg n$} \\
+	&= n\lg n - 2 (2^d - 1) \\
+	&= n\lg n - 2n - 2 \\
+	&= n \ceil{\lg n} - 2 \times 2^{\ceil{\lg n}} -2
+\end{align*}
+Thus, $c = 2$ and the expected value is $\Theta(n)$ better than the worst case.
+\done
