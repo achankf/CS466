@@ -1,4 +1,4 @@
-Reference: 
+{\bf References}
 \begin{itemize}
 \item
 TA's hint during office hours and the professor's hint on Piazza
@@ -27,7 +27,8 @@ Then, consider the probability of $a_i$ in $B$ (or $C$) being larger than all el
 \begin{itemize}
 \item
 {\bf Numerator}
-Consider the counting argument for which $a_i$ can be in $B$: for each element $a_j < a_i$, it is either in/not in $B$, and there are $i-1$ ``slots" before $a_i$ in $B$.
+Consider the number of possibilities that $a_i$ can be stored in $B$.
+For each element $a_j < a_i$, it is either in $B$ or not in $B$, and there are $i-1$ ``slots" before $a_i$ in $B$.
 Thus, the total number of such $B$ for $a_i$ is
 \begin{align*}
 2 \times \cdots \times 2 &= 2^{i-1}
@@ -54,7 +55,7 @@ P(a_i \text{ larger than all elements in the other list}) &= \frac{2^i}{2^n-2} \
 \end{itemize}
 Thus, the expected value is: being the $i$-th element, times the probability for its required comparisons ($i-1$).
 \begin{align*}
-\sum_{i=1}^n (i-1)P(i-1) &= \sum_{i=1}^n (i-1)P(i-1) \\
+\sum_{i=1}^n (i-1)P(a_i) &= \sum_{i=1}^n (i-1)P(a_i) \\
 	&= \sum_{i=1}^n i\frac{2^i}{2^n-2} - \sum_{i=1}^n 1\\
 	&= \frac{1}{2^n -2} \sum_{i=1}^n i2^i - n\\
 	&= \frac{1}{2^n -2} \bigg( 2\frac{1-(n+1)2^n + n 2^{n+1}}{(1-2)^2} \bigg) -n & \text{formula from {\bf the} cheat sheet}\\
