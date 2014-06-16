@@ -8,8 +8,12 @@ Trono, Average Case Analysis When Merging Two Ordered Lists of Different Length
 {\bf Idea}
 First, find the expected value for merging two lists.
 Then, update the recurrence relation and then solve it with the recursion tree method.
+
+{\bf Note}
+The variable $i$ has different meanings in this respond: $a_i$ means it is the $i$-th element for which $1 \le i \le n$.
+On the other hand, I also use $i$ as the number of comparisons, so you will see the summations will go from 1 to $(n-1)$ (i.e. worst case).
 \begin{lemma}
-If $a_i$ in $B$ is larger than all elements in $C$, then $i-1$ comparisons must be performed
+If $a_i$, $1 \le i < n$, in $B$ is larger than all elements in $C$, then $i$ comparisons must be performed
 \end{lemma}
 \begin{proof}
 If there are some elements in $B$ that comes before $a_i$, say $B = \{a_s, \cdots, a_t, a_i\}$, for $s < t < i$.
@@ -21,13 +25,15 @@ Thus, we have a telescoping series (here we only have 3 terms, but there could b
 \begin{align*}
 s + (t-s) + \cdots + (i-t-1) &= i-1
 \end{align*}
-where the dots represents that the expression should be more granular.
+where the dots represents that the expression should be more granular if there are more terms before $a_i$ in $B$.
+Finally, since $i < n$ and there are $n$ elements, so one more comparison is needed; thus, $i$ comparisons must be performed.
 \end{proof}
-Then, consider the probability of $a_i$ in $B$ (or $C$) being larger than all elements in $C$ (or $B$), i.e. $(i-1)$ comparisons are needed.
+Then, consider the probability that $i$ comparison is needed to merge 2 lists.
 \begin{itemize}
 \item
-{\bf Numerator}
+{\bf Numerator (possibilities for arranging $a_i$ between $B$ and $C$)}
 Consider the number of possibilities that $a_i$ can be stored in $B$.
+\emph{Think of the reverse: how can $A=merge(B,C)$ distribute its elements {\bf back} to $B$ and $C$, up to element $a_i$}.
 For each element $a_j < a_i$, it is either in $B$ or not in $B$, and there are $i-1$ ``slots" before $a_i$ in $B$.
 Thus, the total number of such $B$ for $a_i$ is
 \begin{align*}
@@ -38,8 +44,8 @@ Similarly, the same argument applies for $C$, so the total overall number of suc
 2^{i-1} + 2^{i-1} = 2^i
 \end{align*}
 \item
-{\bf Denominator}
-For each of $B$ and $C$, add all $2^{i-1}$, for $1 \le i \le n-1$ (at most $n-1$ slots).
+{\bf Denominator (sum all possibilities)}
+For each of $B$ and $C$, add all $2^{i-1}$, for $1 \le i \le n-1$ (comparisons).
 \begin{align*}
 \sum_{i=1}^{n-1} 2^{i-1} + \sum_{i=1}^{n-1} 2^{i-1} &= 2 \sum_{i=1}^{n-1} 2^{i-1} \\
 	&= 2\sum_{i=0}^{n-2} 2^i \\
@@ -47,22 +53,19 @@ For each of $B$ and $C$, add all $2^{i-1}$, for $1 \le i \le n-1$ (at most $n-1$
 	&= 2^n -2
 \end{align*}
 \item
-Together, the probability is
+Together, the probability is:
 \begin{align*}
-P(a_i \text{ larger than all elements in the other list}) &= \frac{2^i}{2^n-2} \\
-	&= P(a_i) & \text{for short}
+P(i) &= \frac{2^i}{2^n-2}
 \end{align*}
 \end{itemize}
-Thus, the expected value is: being the $i$-th element, times the probability for its required comparisons ($i-1$).
+Thus, the expected value of comparisons is the following.
 \begin{align*}
-\sum_{i=1}^n (i-1)P(a_i) &= \sum_{i=1}^n (i-1)P(a_i) \\
-	&= \sum_{i=1}^n i\frac{2^i}{2^n-2} - \sum_{i=1}^n 1\\
-	&= \frac{1}{2^n -2} \sum_{i=1}^n i2^i - n\\
-	&= \frac{1}{2^n -2} \bigg( 2\frac{1-(n+1)2^n + n 2^{n+1}}{(1-2)^2} \bigg) -n & \text{formula from {\bf the} cheat sheet}\\
-	&= \frac{1}{2^n -2} \bigg( 2-2(n+1)2^n + n 2^{n+2} \bigg) -n \\
-	&= \frac{1}{1 - \frac{2}{2^n}} \bigg( \frac{2}{2^n}-2(n+1) + 4n \bigg) -n \\
-	&\approx -2(n + 1) + 4n -n & \text{for ``large" $n$}\\
-	&= n - 2
+\sum_{i=1}^{n-1} iP(i) &= \sum_{i=1}^{n-1} i\frac{2^i}{2^n-2}\\
+	&= \frac{1}{2^n -2} \sum_{i=1}^{n-1} i2^i\\
+	&= \frac{1}{2^n -2} \bigg( 2\frac{1-n2^{n-1} + (n-1) 2^n}{(1-2)^2} \bigg) & \text{formula from {\bf the} cheat sheet}\\
+	&= \frac{1}{2^n -2} \bigg( 2-n2^n + (n-1) 2^{n+1} \bigg) \\
+	&= \frac{1}{1 - \frac{2}{2^n}} \bigg( \frac{2}{2^n}-n + (2n - 2) \bigg) \\
+	&\approx n -2 & \text{for ``large" $n$}
 \end{align*}
 The rest is about solving the new recurrence relation.
 Since we only care about the asymptotic difference, for simplicity assume $n$ is a power of 2.

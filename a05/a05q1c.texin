@@ -27,7 +27,7 @@ T(n) &= T(\ceil{\frac{n}{2}}) + T(\floor{\frac{n}{2}}) + (n - 1) \\
 \item
 {\bf When $n > 3$ is an odd number.}
 Consider the following counting argument:
-pad the whole array with a dummy variable, so that $n' = n + 1$, which is an even number, so the ``even case" can be applied.
+pad the whole array with a dummy value, say $-\infty$, so that $n' = n + 1$, which is an even number, so the ``even case" can be applied.
 \begin{align*}
 T(n') &= (n+1) \ceil{\lg (n+1)} - 2^{\ceil{\lg (n+1)}} + 1
 \end{align*}

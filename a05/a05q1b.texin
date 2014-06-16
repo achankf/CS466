@@ -1,9 +1,9 @@
 Consider a card game analogy for merge that goes as follows: given a deck of cards (distinct value, same suit), two players will choose a card from his/her deck -- whoever has the smaller card can discard it.
 Whoever discard all cards first wins.
-The loser's money for the bet will be split between the dealer and the winner -- the more remaining cards that the loser has, the more money the winner will get.
+The loser's money for the bet will be split between the dealer and the winner -- the more remaining cards that the loser has, the more money the winner will get (i.e. consider the best case where the loser keeps losing, and so the loser's remaining cards can be merge without any comparison).
 
-Now, think of a crooked dealer (adversary) who want to earn as much money as possible (i.e. loser has as few remaining cards as possible) and is willing to cheat skillfully (i.e. consistency, no same card is dealt twice).
+Now, think of a crooked dealer (adversary) who want to earn as much money as possible (i.e. loser has as few remaining cards as possible) and is willing to cheat skillfully (i.e. consistently, no same card is dealt twice).
 The dealer would deal cards such that the cards are distributed in increasing order.
-Thus, each player has to throw a card (1 comparison is made) every {\bf consecutively} turn, and eventually the loser will have 1 card left.
+Thus, each player has to throw a card (1 comparison is made) every {\bf consecutive} turn, and eventually the loser will have 1 card left.
 Thus, suppose there are $n$ cards, then by the analogy, $n-1$ comparisons must be made and the remaining element can just go straight to the merged array.
 \done
