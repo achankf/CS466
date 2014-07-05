@@ -25,7 +25,9 @@ Also, we keep a copy of $V$ as $V'$.
 \item
 For each $v \in V'$, if $D(E \cup \{v\}, k) = yes$, then add $v$ into $E$, and remove $v$ from $V'$ -- this forms a $k$-colouring.
 \item
-Increment $k$ by one and repeat until $V'$ is empty.
+Increment $k$ by one and repeat previous steps until $V'$ is empty.
+\item
+Finally, return $k$.
 \end{itemize}
 Observe that for each value of $k$ (i.e. new colouring), at least 1 vertex will be consumed.
 Since we are doing a 2D-loop on $V' \le |V|$, then on $k \le |V|$, so the complexity of the algorithm is $O(|V|^2 \times $comlexity of $D)$.

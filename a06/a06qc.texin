@@ -1,7 +1,7 @@
 Let $D$ be the decision problem in part b.
 \begin{itemize}
 \item
-First, given a certificate that contains a k-colourable graph with the colourings on the graph, one can easily verify the ceritificate with a variant of breadth-first search.
+First, given a certificate that contains a graph with the minimal-colourings on the graph, one can easily verify the ceritificate with a variant of breadth-first search (say, with a binary search tree that keeps track of unique colours, adding an extra $\lg n$ factor to the complexity).
 Thus, $D$ is in NP.
 \item
 It is obvious that if we set $k=3$ for $D$, then the accepted language is 3-COLOUR.
