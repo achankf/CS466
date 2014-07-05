@@ -1,0 +1,35 @@
+The decision problem:
+\begin{itemize}
+\item
+Input: $G=(V,E)$, $k \in \mathbb{N}$.
+\item
+Output:
+if $G$ has a $k$-colouring, return yes.
+Otherwise, return no.
+\end{itemize}
+The proof:
+\begin{itemize}
+\item
+Suppose the graph colouring problem has an algorithm $A$ that is in $P$.
+Then we can use $A$ to get the minimal number of colours, say $j$.
+If $k=j$, return yes; otherwise return no.
+Thus, the decision version can also be solved in polynomial time.
+\item
+Suppose the decision problem, $D$, can be solved in polynomial time.
+Consider the following approach:
+\begin{itemize}
+\item
+Do it iteratively starting from $k=1$.
+Also, we keep use an empty graph $E$ that keeps track of the colouring.
+Also, we keep a copy of $V$ as $V'$.
+\item
+For each $v \in V'$, if $D(E \cup \{v\}, k) = yes$, then add $v$ into $E$, and remove $v$ from $V'$ -- this forms a $k$-colouring.
+\item
+Increment $k$ by one and repeat until $V'$ is empty.
+\end{itemize}
+Observe that for each value of $k$ (i.e. new colouring), at least 1 vertex will be consumed.
+Since we are doing a 2D-loop on $V' \le |V|$, then on $k \le |V|$, so the complexity of the algorithm is $O(|V|^2 \times $comlexity of $D)$.
+Since $D$ is in $P$, so the algorithm is in $P$ too.
+\end{itemize}
+This completes the proof.
+\done

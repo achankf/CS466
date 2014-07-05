@@ -1,0 +1,11 @@
+Let $D$ be the decision problem in part b.
+\begin{itemize}
+\item
+First, given a certificate that contains a k-colourable graph with the colourings on the graph, one can easily verify the ceritificate with a variant of breadth-first search.
+Thus, $D$ is in NP.
+\item
+It is obvious that if we set $k=3$ for $D$, then the accepted language is 3-COLOUR.
+Since 3-COLOUR is given to be NP Complete, so the $D$ is NP-hard.
+\end{itemize}
+With both directions, $D$ is NP-complete.
+\done

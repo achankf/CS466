@@ -1,0 +1,42 @@
+First, let's name the vertices:
+\begin{verbatim}
+x-- a
+    | > c --- d
+y-- b         | > TRUE
+z------------ e
+\end{verbatim}
+\clearpage
+\begin{itemize}
+\item
+{\bf All $x,y,z$ are coloured $c$(FALSE)}
+Then, vertices $a$ and $b$ are forced to be either $c$(TRUE) or $c$(RED); so the remaining choice of colour for vertex $c$ is $c$(FALSE).
+Then, vertex $e$ is forced to be $c$(RED), and $d$ is forced to be $c$(FALSE).
+But $d$ is connected to $c$, so $c$ cannot be coloured $c$(FALSE); however, there is no more colour left for $c$.
+Thus, the graph cannot be 3-colourable.
+\begin{verbatim}
+FALSE --- RED
+           |  > (OOPS) --- FALSE
+FALSE -- TRUE                |   > TRUE
+FALSE --------------------- RED
+\end{verbatim}
+\item
+{\bf At least one of $x,y,z$ is coloured $c$(TRUE)}
+There are 7 cases left (i.e. all truth assignments except FFF):
+
+\begin{tabular}{|c c c|c c c c c|}
+\hline
+\multicolumn{3}{|c|}{Truth Assignment} & \multicolumn{5}{|c|}{Possible 3-Colouring (i.e. possibly more than one)} \\\hline
+x & y & z & a & b & c & d & e \\\hline\hline
+T & T & T & FALSE & RED & TRUE & FALSE & RED \\\hline
+T & T & F & FALSE & RED & TRUE & FALSE & RED  \\\hline
+T & F & T & FALSE & RED & TRUE & FALSE & RED  \\\hline
+F & T & T & RED & FALSE & TRUE & FALSE & RED  \\\hline
+T & F & F & FALSE & RED & TRUE & FALSE & RED  \\\hline
+F & T & F & RED & FALSE & TRUE & FALSE & RED  \\\hline
+F & F & T & RED & TRUE & FALSE & RED & FALSE  \\\hline
+\end{tabular}
+
+As you can see, for each truth assignment with at least one T, there exists a 3-colouring.
+\end{itemize}
+Therefore, the statement in the question is true.
+\done

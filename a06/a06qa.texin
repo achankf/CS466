@@ -1,0 +1,20 @@
+Consider the following modifications to breadth-first search (BFS).
+\begin{itemize}
+\item
+Instead of having 3 values for the status flag (i.e. $\{$not touched, reached, done search$\}$) for each vertex, we change ``done search" into $\{RED,GREEN\}$, which represents the colour scheme for the 2-colouring.
+\item
+For each vertex, while it is pushing its neighbours to the waiting queue of BFS, it checks whether they have the same colour as it; if so, reject as its not 2-colourable; otherwise keep going until the BFS is complete.
+\end{itemize}
+Why it works:
+\begin{itemize}
+\item
+If the given graph $G=(V,E)$ is 2-colourable, then $G$ is bipartite (by graph theory).
+Thus, for each vertex $v \in V$, its can only have an edge to the ``opposite colour set" -- and vice versa; so the algorithm cannot reject $G$.
+Therefore, the algorithm must run through the whole graph and return the colouring.
+\item
+If $G$ is not 2-colourable, then $G$ is not bipartite (again, by graph theory), and $G$ has an odd cycle (by graph theory).
+Suppose the odd cycle is $v_1, \cdots, v_k, v_1$, $v_i \in V$; thus, WLOG assume that $v_1$ has been searched, when we do the BFS on $v_k$, it will have the same colouring as $v_1$.
+Thus, the algorithm rejects $G$.
+\end{itemize}
+The run time is the same as BFS, so the algorithm is in $P$.
+\done

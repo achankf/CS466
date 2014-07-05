@@ -1,0 +1,7 @@
+First, there are exactly $n$ triangles for each $x_i, \neg x_i$ to the special RED vertex (there may be more triangles in the graph, though).
+So, $x_i$ and $\neg x_i$ cannot be $c$(RED).
+Since the cycle is a triangle, so in order to be 3-colourable, only one of $x_i$ and $\neg x_i$ can be $c$(TRUE), while the other one be $c$(FALSE).
+Thus, only 2 colours are necessary for the variable vertices and their negation vertices.
+Hence, we can certainly play around by adding more helper vertices to make the graph with literal edges 3-colourable.
+Conversely, if the graph with literal edges is 3-colourable, then a truth assignment exists because the variable (and negation) vertices are always consistent (i.e. enforced by triangles for each $x_i$, $\neg x_i$ and RED).
+\done

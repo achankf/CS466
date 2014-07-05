@@ -1,0 +1,8 @@
+First, 3-COLOUR is in NP because it is easy to verify its certificates with breadth-first search.
+
+Then, part d suggests that any 3-colouring scheme for the given construction provides consistent truth assignments.
+Then, part e suggests that each widget is 3-colourable iff each clause has at least one true literal -- this can be extended to all widgets in the graph.
+Together, the overall graph with literal vertices is 3-colourable if and only if $\phi$ is satisfiable.
+
+Therefore, 3-CNF-SAT can be reduced to 3-COLOUR; hence, 3-COLOUR is NP-complete.
+\done
