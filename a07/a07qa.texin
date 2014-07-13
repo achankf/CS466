@@ -1,0 +1,5 @@
+First, since it is given that $w_j < W$ for all $1 \le j \le n$, so the solution of $I$ must include at least one item.
+In a sense, it is the solution that picks the $I_j$ instance, and the solution has cope with the remaining items.
+In particular, the problem becomes to solving one of $I_j$ for $1 \le j \le n$.
+Therefore, the solution of $I$ must be one of $\{P_1, \cdots, P_n\}$, by definition of $I_j$.
+\done

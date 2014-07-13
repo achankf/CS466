@@ -1,0 +1,11 @@
+First, it is trival that
+$\nu (Q_j) \ge \nu (P_j)$, because if the knapsack is not filled perfectly, i.e. have some room but not enough for the next item, then the 0-1 knapsack would give up; whereas the rational knapsack would fill as much as it can.
+
+Next, since the items are sorted by descending values, so the mandatory item $j$ must be at least as valuable as {\bf one} of the remaining items in $\{j+1, \cdots, n\}$.
+Thus, it is impossible that removing the fractional item (possibly the last item) would change the cost to less than half of $\nu(Q_j)$, because the mandatory item $j$ will always be there to ``back" the solution.
+Thus, we have
+\begin{align*}
+\nu(R_j) &\ge \frac{\nu (Q_j)}{2} & \text{Argument above} \\
+\iff \nu(R_j) &\ge \frac{\nu (Q_j)}{2} \ge \frac{\nu (P_j)}{2} & \text{$\nu (Q_j) \ge \nu (P_j)$}
+\end{align*}
+\done

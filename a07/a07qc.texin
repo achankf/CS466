@@ -1,0 +1,10 @@
+First and again, since $w_j \le W$ for all items, so the first mandatory $j$-th element must fit in the knapsack.
+
+($\rightarrow$ direction) It is trivial that the rational knapsack can include 0 or 1 fractional item -- either all selected items fit perfectly, or the knapsack does not have enough room for the last element.
+
+($\leftarrow$ direction) Suppose by contradiction that the knapsack can fit 2 (or more) fractional items.
+This is possible only when the $v/w$ ratio for the remaining items -- otherwise greedy will pick the one that has the largest ratio.
+However, greedy is biased towards picking an entire item, so greedy will pick the first item (based on the underlying sorting algorithm) for the remaining spaces.
+
+Therefore, with greedy it is possible to create $I_j$ that has at most 1 fractional item.
+\done

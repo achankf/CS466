@@ -1,0 +1,22 @@
+First, observe that for instance $I_j$ we must take item $j$ anyway, so the problem becomes solving the rational knapsack problem for items $\{j+1, \cdots, n\}$ for weight at most $(W - w_j)$.
+The rest is just copy-and-paste from memory of CS341...
+
+Let $G$ be the greedy solution and has a value of $V(G)$.
+Suppose by contradiction that $G$ is not the optimal solution, instead the optimal solution is $G^*$, which has the value of $V(G^*)$.
+Notice that $G \neq G^*$ and $V(G^*) > V(G)$.
+
+Now consider the sorted ordering of the items in solutions $G$ and $G^*$ by the $v/w$ ratio.
+Suppose the ordered lists of items differ at position $k$, where $1 \le k \le n$.
+\begin{itemize}
+\item
+If $G^*$ has less items than $G$ ($|G^*| < |G|$), then the greedy algorithm would have chosen the elements in $G^*$, because $G^*$ has better values and these items fit around $(W - w_j)$. 
+\item
+If $G^*$ has more items than $G$ ($|G^*| > |G|$), then the knapsack in $G$ is not full and we can fill more into it.
+However, the knapsack in $G$ {\bf is} full because the greedy algorithm takes as much as it can.
+\item
+Otherwise ($|G^*| = |G|$), the $v/w$ ratio of the $k$-th item in sorted $G^*$ must be greater than that of $G$.
+However, this is also a contradiction because the greedy algorithm would have taken that element from $G^*$ instead.
+\end{itemize}
+Thus, $G$ is the optimal solution.
+Therefore, the greedy algorithm would have optimized for weight $(W-w_j)$, which, overall, have optimized for weight $W$ for instance $I_j$.
+\done

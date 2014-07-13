@@ -1,0 +1,25 @@
+Finally, the most fun part of the course :-)...
+Algorithm:
+\begin{itemize}
+\item
+Input: a list of items that has positive weight and non-negative values, and a weight $W$.
+\item
+For each instance $I_j$, compute $Q_j$ from the rational knapsack (greedy) algorithm for items $\{j+1, \cdots, n\}$ for weight $(W-w_j)$, for $1 \le j \le n$.
+
+Notice that $\nu(Q_j) = \nu($greedy result$) + v_k$.
+Also, greedy is $\Theta(n\lg n)$, i.e. sorting and then run through all items at most once; so, with the loop the total complexity is $\Theta(n^2\lg n)$.
+\item
+Remove the possible single fractional part from each $Q_j$, and get $R_j$. $\Theta(n^2)$ (can be $\Theta(n)$ because the fractional item is always at the end of the list... though not that it matters).
+\item
+Return $R_j$ such that $\nu(R_j) = \max_{i=1}^{n}(\nu(R_i))$. $\Theta(n)$.
+\end{itemize}
+The correctness of the algorithm follows from previous parts of the question, mainly part b for the greedy algorithm.
+
+Thus, overall, the worst-case run time is $\Theta(n^2\lg n)$; hence, it is polynomial-time.
+Simimlarly, since 
+\begin{align*}
+\nu(R_j) &\ge \frac{\nu (P_j)}{2} & \text{part d} \\
+\implies \frac{\nu (P_j)}{\nu(R_j)} &\le 2
+\end{align*}
+and the solution for knapsack is one of $P_j$'s (by part a), so this appromixate algorithm is a polynomial-time 2-approximation algorithm for the knapsack problem.
+\done
