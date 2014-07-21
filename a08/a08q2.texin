@@ -1,11 +1,11 @@
 \begin{enumerate}
 \item
-I guess the point of this question is to show a polynomial time algorithm exists.
+I guess the point of this part of the question is to show a polynomial time algorithm exists.
 Let $A$ be the adjacency matrix of $G = (V,E)$.
 \begin{itemize}
 \item
-First, recall from Math 239 that the solution to finding a path of length (n-1) is to multiply $A$ by itself $(n-1)$ times, i.e. $G^{n-1}$.
-From Piazza, $n$ is bounded by $E = O(V^2)$, and the naive matrix multiple is $\Theta(|V|^3)$, so the run time of this part is $O(|V|^5)$.
+First, recall from Math 239 that the solution to finding a path of length (n-1) is to multiply $A$ by itself $(n-1)$ times, i.e. $A^{n-1}$.
+From Piazza, $n$ is bounded by the number of nodes, or $\Theta(|V|)$, and the naive matrix multiple is $\Theta(|V|^3)$, so the run time of this part is $\Theta(|V|^4)$.
 \item
 Then, look for entries that are greater then 0, push them into a list, then return the list. $\Theta(|E|)$.
 \end{itemize}
@@ -28,22 +28,22 @@ If $v_j$ is reachable from $v_i$ via $v_k$ (i.e. paths of length $n-1$), then th
 \item
 Otherwise, if $v_k$ cannot reach $v_j$, then, of course, the number of paths do not change.
 \end{itemize}
-In other words, as long as $(A^{n-1})_{i,j} > 0$, there is at least 1 way to reach from source to destination via a path of length $(n-1)$.
+{\bf In other words, as long as $(A^{n-1})_{i,j} > 0$, there is at least 1 way to reach from source to destination via a path of length $(n-1)$.}
 \end{itemize}
-
-Overall, the complexity is $O(|V|^5)$; thus, a polynomial algorithm that solves the exact solution for part a exists.
+Overall, the complexity is $O(|V|^4)$; thus, a polynomial algorithm that solves the exact solution for part a exists.
 \done
 \item
 The anomaly is the restriction in Hamiltonian path that each node must be visited exactly once.
 Consider a complete graph that has $n > 2$ nodes, $K_n$ (I tried $n=2$ but it seems like a special case).
-This means the adjacency matrix, $A$, is filled with 1's, except the diagonal is 0.
+{\bf This means the adjacency matrix, $A$, is filled with 1's, except the diagonal is 0.}
 
-We want to find $A^{n-1}$, which gives the possibilities of reaching the source and destination.
+We want to find $A^{n-1}$, which gives the number of possibilities of reaching from the source to the destination from any 2 pairs of nodes (except for diagonal -- cycles).
 However, the algorithm in part a) does not guarantee that each node has to be visisted once -- in fact, it is possibly to loop between 2 nodes (i.e. $(a,b,a,b,\cdots, destination)$), which is not Hamiltonian but that counts as 1 possbility.
 Thus, we need to verify all possibilties.
 
-However, by plug-and-play with a matrix calculator, it seems the number of possibilities is exponential -- I checked for $n = 3, \cdots, 11$, and it seems like each that the sum of values of $A^{n-1}$ is roughly $(n-1)^n + (n-1)^{n-1}$ (off by a few -- though I do not have a proof, sorry).
+However, by plug-and-play with a matrix calculator, it seems the number of possibilities is exponential -- I checked for $n = 3, \cdots, 11$, and it seems like for each case the sum of values of $A^{n-1}$ is roughly $(n-1)^n + (n-1)^{n-1}$ (off by a few -- though I do not have a proof, sorry).
 
-So, the point that I want to make is one needs to verify a large (potentially exponential) number of possibilities, which is not efficient.
+So, the point that I want to make is: the algorithm in part a) only returns paths or length $(n-1)$, which may (or may not) be Hamiltonian.
+To be absolutely sure, one needs to verify a large (potentially exponential) number of possibilities, which is not efficient.
 \done
 \end{enumerate}

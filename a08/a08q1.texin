@@ -21,8 +21,8 @@ This means that coalescing nodes in the simple cycle actually decreases the weig
 Finally, we take away an edge from the simple cycle.
 The remaining is a graph, $C$, that has no cycle, and it goes through every nodes in $V$ once -- by definition that graph is a spanning tree, i.e. $C \in S$.
 \begin{align*}
-w(C) &\le 2w(T) & \text{Triangle inequality} \\
-\iff w(MST(P)) &\le w(C) \le 2w(T) & \text{from first line} \\
+w(C) & \le w(DFS(T)) \le 2w(T) & \text{Triangle inequality} \\
+\iff w(MST(P)) &\le w(C) \le 2w(T) & \text{since $C \in S$} \\
 \frac{w(MST(P))}{w(T)} &\le 2
 \end{align*}
 In conclusion, since MST can be compute in $\Theta(n\lg n)$, and by the above inequality, there exists a polynomial time 2-approximation algorithm for the Steiner tree.
