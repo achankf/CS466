@@ -1,0 +1,49 @@
+\begin{enumerate}
+\item
+I guess the point of this question is to show a polynomial time algorithm exists.
+Let $A$ be the adjacency matrix of $G = (V,E)$.
+\begin{itemize}
+\item
+First, recall from Math 239 that the solution to finding a path of length (n-1) is to multiply $A$ by itself $(n-1)$ times, i.e. $G^{n-1}$.
+From Piazza, $n$ is bounded by $E = O(V^2)$, and the naive matrix multiple is $\Theta(|V|^3)$, so the run time of this part is $O(|V|^5)$.
+\item
+Then, look for entries that are greater then 0, push them into a list, then return the list. $\Theta(|E|)$.
+\end{itemize}
+Correctness:
+Let $B = A^{k-1}$, for $k \ge 2$.
+\begin{itemize}
+\item
+{\bf Base Case} When $k = 2$, $B = A$, and indeed the path of length 1 is the direct neighbour of a node.
+\item
+{\bf Inductive Step}
+When $k = (n-1)$, $A^{n-1} = BA$.
+Consider the value of $(A^{n-1})_{i,j}$.
+\begin{align*}
+(A^{n-1})_{i,j} &= \sum_{k=1}^{|V|}b_{i,k}a_{k,j} & \text{$b_{i,k} \in B$, $a_{k,j} \in A$}
+\end{align*}
+That is, by definition, the number of ways ($b_{i,k}$) to reach node $v_k$ from $v_i$, given the reachability from $v_k$ to $v_j$ ($a_{k,j}$), indicated by 0 or 1 in $A$.
+\begin{itemize}
+\item
+If $v_j$ is reachable from $v_i$ via $v_k$ (i.e. paths of length $n-1$), then these paths have to include a path of length $n-2$ in its subpath.
+\item
+Otherwise, if $v_k$ cannot reach $v_j$, then, of course, the number of paths do not change.
+\end{itemize}
+In other words, as long as $(A^{n-1})_{i,j} > 0$, there is at least 1 way to reach from source to destination via a path of length $(n-1)$.
+\end{itemize}
+
+Overall, the complexity is $O(|V|^5)$; thus, a polynomial algorithm that solves the exact solution for part a exists.
+\done
+\item
+The anomaly is the restriction in Hamiltonian path that each node must be visited exactly once.
+Consider a complete graph that has $n > 2$ nodes, $K_n$ (I tried $n=2$ but it seems like a special case).
+This means the adjacency matrix, $A$, is filled with 1's, except the diagonal is 0.
+
+We want to find $A^{n-1}$, which gives the possibilities of reaching the source and destination.
+However, the algorithm in part a) does not guarantee that each node has to be visisted once -- in fact, it is possibly to loop between 2 nodes (i.e. $(a,b,a,b,\cdots, destination)$), which is not Hamiltonian but that counts as 1 possbility.
+Thus, we need to verify all possibilties.
+
+However, by plug-and-play with a matrix calculator, it seems the number of possibilities is exponential -- I checked for $n = 3, \cdots, 11$, and it seems like each that the sum of values of $A^{n-1}$ is roughly $(n-1)^n + (n-1)^{n-1}$ (off by a few -- though I do not have a proof, sorry).
+
+So, the point that I want to make is one needs to verify a large (potentially exponential) number of possibilities, which is not efficient.
+\done
+\end{enumerate}

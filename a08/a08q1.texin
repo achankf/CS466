@@ -1,0 +1,29 @@
+Let $G = (V,E)$ be a complete graph that is generated from $P$, as described.
+Let $S$ be the set of all spanning trees from $G$.
+Let $w$ be the weight function that returns the sum the weight of the edges.
+Since the minimum spanning tree (MST) has the least weight compares to other spanning trees,
+\begin{align*}
+w(MST(P)) &\le w(s) & \text{for all $s \in S$}
+\end{align*}
+Now, consider generating a simple cycle, that is similar to 2-TSP approximation, from the optimal Steiner tree, $T$, i.e. running it with depth-first search (DFS).
+So, from class, we have the following inequality for DFS:
+\begin{align*}
+w(DFS(T)) \le 2w(T)
+\end{align*}
+However, the simple cycle contains additional nodes that are inserted by the Steiner tree algorithm.
+To fix this, we can go through the simple cycle and coalesce any points additional nodes.
+Say, we have nodes $v_1, v_2 \in V$, and an additional node $u \not\in V$, and that there are edges $(v_1, u), (u, v_2) \in E_T$ (edges in the optimal).
+Since the triangle inequality holds under Euclidean geometry,
+\begin{align*}
+w(v_1, v_2) &\le w(v_1, u) + w(u, v_2) &\text{recall $u$ is the node that we want to remove}
+\end{align*}
+This means that coalescing nodes in the simple cycle actually decreases the weights.
+Finally, we take away an edge from the simple cycle.
+The remaining is a graph, $C$, that has no cycle, and it goes through every nodes in $V$ once -- by definition that graph is a spanning tree, i.e. $C \in S$.
+\begin{align*}
+w(C) &\le 2w(T) & \text{Triangle inequality} \\
+\iff w(MST(P)) &\le w(C) \le 2w(T) & \text{from first line} \\
+\frac{w(MST(P))}{w(T)} &\le 2
+\end{align*}
+In conclusion, since MST can be compute in $\Theta(n\lg n)$, and by the above inequality, there exists a polynomial time 2-approximation algorithm for the Steiner tree.
+\done
